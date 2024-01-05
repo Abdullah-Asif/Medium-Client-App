@@ -1,26 +1,24 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
-
+import Header from "./components/common/Header";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import BlogList from "./components/blogs/BlogList";
+import BlogDetails from "./components/blogs/BlogDetails";
+import SignUp from "./components/auth/SignUp";
+import SignIn from "./components/auth/SignIn";
+import AuthProvider from "./contexts/authContext";
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+  return(<>
+      <Router>
+          <AuthProvider>
+          <Header/>
+          <Routes>
+              <Route path="/auth/sign-up" Component={SignUp}/>
+              <Route path="/auth/sign-in" Component={SignIn}/>
+              <Route path="/blogs"        Component={BlogList}/>
+              <Route path="/blogs/:id"    Component={BlogDetails}/>
+          </Routes>
+          </AuthProvider>
+      </Router>
+  </>);
 }
-
 export default App;

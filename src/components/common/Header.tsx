@@ -5,13 +5,14 @@ import { Disclosure, Menu, Transition } from '@headlessui/react'
 import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import {useAuth} from "../../contexts/authContext";
 import BlogService from "../../services/blogs/blogService";
+import AuthService from "../../services/auth/authService";
 function classNames(...classes: any[]) {
     return classes.filter(Boolean).join(' ')
 }
 
 export default function Header() {
     const { isLoggedIn, logout } = useAuth();
-    const [showModal, setShowModal] = useState(false);
+    const [showCreateModal, setShowCreateModal] = useState(false);
     const [blogTitle, setBlogTitle] = useState('');
     const [blogContent, setBlogContent] = useState('');
     const navigate = useNavigate();
@@ -23,14 +24,14 @@ export default function Header() {
 
     const handleSaveChanges = () => {
        const res = BlogService.createBlog({title: blogTitle,content: blogContent})
-        setShowModal(false);
+        setShowCreateModal(false);
         setBlogTitle('');
         setBlogContent('');
         navigate('/blogs')
     };
 
     const handleCloseModal = () => {
-        setShowModal(false);
+        setShowCreateModal(false);
         setBlogTitle('');
         setBlogContent('');
     };
@@ -83,13 +84,13 @@ export default function Header() {
                                     </div>
                                 </div>
                                 <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-                                    <button className="bg-gray-700 hover:bg-blue-700 text-white font-normal py-2 px-4 mr-8 border border-blue-700 rounded " onClick={() => setShowModal(true)}>
+                                    <button className="bg-gray-700 hover:bg-blue-700 text-white font-normal py-2 px-4 mr-8 border border-blue-700 rounded " onClick={() => setShowCreateModal(true)}>
                                         Write Blog
                                     </button>
-                                    {showModal ? (
+                                    {showCreateModal ? (
                                         <>
                                             <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
-                                                <div className="relative w-auto my-6 mx-auto max-w-3xl">
+                                                <div className="relative w-full my-6 mx-auto max-w-4xl">
                                                     <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
                                                         <div className="flex items-start justify-between p-5 border-b border-solid border-blueGray-200 rounded-t">
                                                             <h3 className="text-3xl font-semibold">
@@ -97,7 +98,7 @@ export default function Header() {
                                                             </h3>
                                                             <button
                                                                 className="p-1 ml-auto bg-transparent border-0 text-black opacity-5 float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
-                                                                onClick={() => setShowModal(false)}
+                                                                onClick={() => setShowCreateModal(false)}
                                                             >
                                         <span className="bg-transparent text-black opacity-5 h-6 w-6 text-2xl block outline-none focus:outline-none">
                                             ×
@@ -156,7 +157,13 @@ export default function Header() {
                                                     src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
                                                     alt=""
                                                 />
+                                                <div className="flex flex-col">
+                                                    <p className="text-sm font-medium text-gray-100 mt-2 ml-2">{AuthService.getCurrentUserName()}</p>
+                                                    {/* Replace 'John Doe' with your dynamic username variable */}
+                                                    {/* You can add other user-related information here */}
+                                                </div>
                                             </Menu.Button>
+
                                         </div>
                                         <Transition
                                             as={Fragment}

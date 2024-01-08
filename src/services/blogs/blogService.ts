@@ -6,7 +6,17 @@ class BlogService {
 
     async getAllBlogs() {
         try {
-            const response: AxiosResponse<BlogModel[]> = await axios.get(this.baseUrl, {headers: AuthHeader()});
+            const response: AxiosResponse<BlogModel[]> = await axios.get(this.baseUrl);
+            return response.data;
+        }
+        catch (err: any) {
+            console.log('Error fetching blogs', err.message)
+        }
+    }
+
+    async getBlogById(id: string) {
+        try {
+            const response: AxiosResponse<BlogModel> = await axios.get(`${this.baseUrl}/${id}`);
             return response.data;
         }
         catch (err: any) {
@@ -32,7 +42,7 @@ class BlogService {
         }
     }
 
-    async editBlog(id: string, updatedBlogData: Partial<BlogModel>) {
+    async updateBlog(id: string, updatedBlogData: Partial<BlogModel>) {
         try {
             const response: AxiosResponse<BlogModel> = await axios.put(`${this.baseUrl}/${id}`, updatedBlogData, {
                 headers: AuthHeader(),

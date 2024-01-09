@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from "react";
-import {useLocation, useNavigate} from "react-router-dom";
-import {jwtDecode} from 'jwt-decode'
+import { useEffect, useState } from "react";
+import {useLocation} from "react-router-dom";
 import AuthService from "../../services/auth/authService";
 import Delete from "../common/Delete";
 import EditBlogModal from "./EditBlogModal";

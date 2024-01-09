@@ -1,9 +1,7 @@
-import React, {createContext, useContext, useState} from "react";
+import {createContext, useContext, useState} from "react";
 import {SignInModel} from "../models/signInModel";
 import AuthService from "../services/auth/authService";
 import {SignUpModel} from "../models/SignUpModel";
-import {jwtDecode} from 'jwt-decode'
-
 
 interface AuthContextType {
     isLoggedIn: boolean;

@@ -2,7 +2,7 @@ import {BlogModel} from "../../models/BlogModel";
 import axios, {AxiosResponse} from "axios";
 import AuthHeader from "../auth/authHeader";
 class BlogService {
-    baseUrl: string = process.env.REACT_APP_BASE_API_URL + 'blogs';
+    baseUrl: string = import.meta.env.VITE_APP_BASE_API_URL + 'blogs';
 
     async getAllBlogs() {
         try {

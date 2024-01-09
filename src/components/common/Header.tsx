@@ -1,8 +1,8 @@
-import { Fragment, useState, useEffect } from 'react';
+import { Fragment, useState} from 'react';
 import { Link } from 'react-router-dom';
 import {useNavigate } from 'react-router-dom'
 import { Disclosure, Menu, Transition } from '@headlessui/react'
-import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
+import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
 import {useAuth} from "../../contexts/authContext";
 import BlogService from "../../services/blogs/blogService";
 import AuthService from "../../services/auth/authService";
@@ -23,7 +23,7 @@ export default function Header() {
     };
 
     const handleSaveChanges = () => {
-       const res = BlogService.createBlog({title: blogTitle,content: blogContent})
+        BlogService.createBlog({title: blogTitle,content: blogContent})
         setShowCreateModal(false);
         setBlogTitle('');
         setBlogContent('');

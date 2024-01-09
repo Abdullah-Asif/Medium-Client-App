@@ -6,7 +6,7 @@ import { jwtDecode} from "jwt-decode";
 class AuthService {
 
      isLoggedIn : boolean = false;
-     private baseUrl: string = process.env.REACT_APP_BASE_API_URL + 'auth/'
+     private baseUrl: string = import.meta.env.VITE_APP_BASE_API_URL + 'auth/'
      public register(signUpModel: SignUpModel) {
           return axios.post(this.baseUrl + "sign-up", {
                username: signUpModel.username,

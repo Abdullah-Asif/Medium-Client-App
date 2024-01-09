@@ -52,6 +52,29 @@ class BlogService {
             console.log('Error when editing the blog', err.message);
         }
     }
+
+    async downloadBlogAsPDF(id: string) {
+        try {
+            const response = await axios.get(`${this.baseUrl}/${id}/download`, {
+                responseType: 'blob',
+                headers: {
+                    'Content-Type': 'application/pdf',
+                },
+            });
+
+            const blob = new Blob([response.data], { type: 'application/pdf' });
+
+            const url = window.URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.setAttribute('download', `blog_${id}.pdf`); // Set the filename as desired
+            document.body.appendChild(link);
+            link.click();
+            link.parentNode.removeChild(link);
+        } catch (err) {
+            console.log('Error downloading the blog as PDF:', err.message);
+        }
+    }
 }
 
 export default new BlogService();

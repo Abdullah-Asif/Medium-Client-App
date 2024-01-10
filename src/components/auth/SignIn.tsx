@@ -14,7 +14,8 @@ import * as Yup from 'yup';
 import {SignInModel} from "../../models/signInModel";
 import {useNavigate } from 'react-router-dom'
 import {useAuth} from "../../contexts/authContext";
-
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const validationSchema = Yup.object().shape({
     username: Yup.string().required('Username is required'),
@@ -27,10 +28,24 @@ export default function SignIn() {
     const {login} = useAuth();
     const navigate = useNavigate();
 
-    const handleSubmit = (values: SignInModel) => {
-        console.log(values);
-        login(values);
-        navigate("/blogs")
+    const handleSubmit = async (values: SignInModel) => {
+        try {
+            console.log(values);
+            await login(values);
+            toast.success("Login successful !", {
+                position: toast.POSITION.BOTTOM_RIGHT,
+            });
+            // setTimeout(() => {
+            //     navigate("/blogs");
+            // }, 3000);
+            navigate("/blogs");
+
+        }catch (error) {
+            toast.error(`${error.message}`, {
+                position: toast.POSITION.BOTTOM_RIGHT,
+            });
+        }
+
     };
 
     return (
@@ -109,6 +124,7 @@ export default function SignIn() {
                             </Form>
                         )}
                     </Formik>
+                    <ToastContainer/>
                 </Box>
             </Container>
         </ThemeProvider>

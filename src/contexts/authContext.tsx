@@ -33,7 +33,7 @@ export default function AuthProvider ({children}: any) {
             }
         } catch (error) {
             console.error('Login error:', error);
-            throw new Error('Login failed');
+            throw error.response.data;
         }
     };
 

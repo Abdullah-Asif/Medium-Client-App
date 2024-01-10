@@ -8,12 +8,24 @@ class AuthService {
      isLoggedIn : boolean = false;
      private baseUrl: string = import.meta.env.VITE_APP_BASE_API_URL + 'auth/'
      public register(signUpModel: SignUpModel) {
-          return axios.post(this.baseUrl + "sign-up", {
-               username: signUpModel.username,
-               name: signUpModel.name,
-               email: signUpModel.email,
-               password: signUpModel.password
-          });
+          try {
+               const response =  axios.post(this.baseUrl + "sign-up", {
+                    username: signUpModel.username,
+                    name: signUpModel.name,
+                    email: signUpModel.email,
+                    password: signUpModel.password
+               });
+               return response;
+          }
+          catch (error) {
+               if (error.response) {
+                    throw error.response.data;
+               }
+               else {
+                    throw 'Error while processing the request';
+               }
+          }
+
      }
 
      public async login(signInModel: SignInModel) {

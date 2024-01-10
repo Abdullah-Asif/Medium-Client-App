@@ -1,7 +1,7 @@
-// Modal.js
 import { useState } from "react";
 import BlogService from "../../services/blogs/blogService";
-
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function EditBlogModal({ blog, setShowModal, updateBlogData }: any) {
     const [editedBlog, setEditedBlog] = useState({ ...blog });
@@ -18,6 +18,9 @@ export default function EditBlogModal({ blog, setShowModal, updateBlogData }: an
             await BlogService.updateBlog(blog.id, editedBlog);
             const updatedBlog = await BlogService.getBlogById(blog.id);
             updateBlogData(updatedBlog);
+            toast.success("Blog updated successfully !", {
+                position: toast.POSITION.BOTTOM_RIGHT,
+            });
             setShowModal(false);
         }
         catch (error: any) {
@@ -75,6 +78,7 @@ export default function EditBlogModal({ blog, setShowModal, updateBlogData }: an
                     </div>
                 </div>
             </div>
+            <ToastContainer/>
             <div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
 
         </>

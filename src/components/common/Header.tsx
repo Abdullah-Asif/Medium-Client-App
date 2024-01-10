@@ -6,6 +6,10 @@ import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
 import {useAuth} from "../../contexts/authContext";
 import BlogService from "../../services/blogs/blogService";
 import AuthService from "../../services/auth/authService";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
+
 function classNames(...classes: any[]) {
     return classes.filter(Boolean).join(' ')
 }
@@ -19,15 +23,47 @@ export default function Header() {
 
     const handleLogout = () => {
         logout();
-        navigate('/');
+        toast.success("You've successfully logged out !", {
+            position: toast.POSITION.BOTTOM_RIGHT,
+        });
+        navigate('/auth/sign-in');
     };
 
-    const handleSaveChanges = () => {
-        BlogService.createBlog({title: blogTitle,content: blogContent})
-        setShowCreateModal(false);
-        setBlogTitle('');
-        setBlogContent('');
-        navigate('/blogs')
+    const handleOpenCreatModal = () => {
+        if (!AuthService.getCurrentUserLoggedInStatus()) {
+            setShowCreateModal(false);
+            toast.info("You need to login first !", {
+                position: toast.POSITION.BOTTOM_RIGHT,
+            });
+            navigate("/auth/sign-in");
+        }
+        else {
+            setShowCreateModal(true);
+        }
+    }
+    const handleSaveChanges = async () => {
+        try {
+            await BlogService.createBlog({title: blogTitle,content: blogContent})
+            setShowCreateModal(false);
+            setBlogTitle('');
+            setBlogContent('');
+            toast.success("Blog created successfully !", {
+                position: toast.POSITION.BOTTOM_RIGHT,
+            });
+            navigate('/blogs')
+        }
+        catch (error) {
+            setBlogTitle('');
+            setBlogContent('');
+            setShowCreateModal(false);
+            if (error.response && error.response.status === 401) {
+                toast.info("You need to login first !", {
+                    position: toast.POSITION.BOTTOM_RIGHT,
+                });
+            }
+            navigate("/auth/sign-in");
+        }
+
     };
 
     const handleCloseModal = () => {
@@ -84,7 +120,7 @@ export default function Header() {
                                     </div>
                                 </div>
                                 <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-                                    <button className="bg-gray-700 hover:bg-blue-700 text-white font-normal py-2 px-4 mr-8 border border-blue-700 rounded " onClick={() => setShowCreateModal(true)}>
+                                    <button className="bg-gray-700 hover:bg-blue-700 text-white font-normal py-2 px-4 mr-8 border border-blue-700 rounded " onClick={() => handleOpenCreatModal()}>
                                         Write Blog
                                     </button>
                                     {showCreateModal ? (
@@ -175,16 +211,16 @@ export default function Header() {
                                             leaveTo="transform opacity-0 scale-95"
                                         >
                                             <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-                                                <Menu.Item>
-                                                    {({ active }) => (
-                                                        <a
-                                                            href="#"
-                                                            className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}
-                                                        >
-                                                            Your Profile
-                                                        </a>
-                                                    )}
-                                                </Menu.Item>
+                                                {/*<Menu.Item>*/}
+                                                {/*    {({ active }) => (*/}
+                                                {/*        <a*/}
+                                                {/*            href="#"*/}
+                                                {/*            className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}*/}
+                                                {/*        >*/}
+                                                {/*            Your Profile*/}
+                                                {/*        </a>*/}
+                                                {/*    )}*/}
+                                                {/*</Menu.Item>*/}
                                                 {!isLoggedIn &&
                                                     <Menu.Item>
                                                         {({ active }) => (
@@ -223,7 +259,7 @@ export default function Header() {
                                 </div>
                             </div>
                         </div>
-
+                        <ToastContainer/>
                         {/*<Disclosure.Panel className="sm:hidden">*/}
                         {/*    <div className="space-y-1 px-2 pb-3 pt-2">*/}
                         {/*        {navigation.map((item) => (*/}

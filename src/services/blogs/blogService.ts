@@ -1,6 +1,7 @@
 import {BlogModel} from "../../models/BlogModel";
 import axios, {AxiosResponse} from "axios";
 import AuthHeader from "../auth/authHeader";
+
 class BlogService {
     baseUrl: string = import.meta.env.VITE_APP_BASE_API_URL + 'blogs';
 
@@ -8,8 +9,7 @@ class BlogService {
         try {
             const response: AxiosResponse<BlogModel[]> = await axios.get(this.baseUrl);
             return response.data;
-        }
-        catch (err: any) {
+        } catch (err: any) {
             console.log('Error fetching blogs', err.message)
         }
     }
@@ -18,8 +18,7 @@ class BlogService {
         try {
             const response: AxiosResponse<BlogModel> = await axios.get(`${this.baseUrl}/${id}`);
             return response.data;
-        }
-        catch (err: any) {
+        } catch (err: any) {
             console.log('Error fetching blogs', err.message)
         }
     }
@@ -30,13 +29,15 @@ class BlogService {
                 headers: AuthHeader(),
             });
             return response.data;
-        } catch (err: any) {
-            console.log('Error when creating the blog', err.message);
+        } catch (error) {
+            console.log('Error when creating the blog', error.message);
+            throw error;
         }
     }
+
     async deleteBlogById(id: string) {
         try {
-            await axios.delete(`${this.baseUrl}/${id}`, { headers: AuthHeader() });
+            await axios.delete(`${this.baseUrl}/${id}`, {headers: AuthHeader()});
         } catch (err: any) {
             console.log('Error when deleting the blog', err.message);
         }
@@ -62,12 +63,12 @@ class BlogService {
                 },
             });
 
-            const blob = new Blob([response.data], { type: 'application/pdf' });
+            const blob = new Blob([response.data], {type: 'application/pdf'});
 
             const url = window.URL.createObjectURL(blob);
             const link = document.createElement('a');
             link.href = url;
-            link.setAttribute('download', `blog_${id}.pdf`); // Set the filename as desired
+            link.setAttribute('download', `blog_${id}.pdf`);
             document.body.appendChild(link);
             link.click();
             link.parentNode.removeChild(link);

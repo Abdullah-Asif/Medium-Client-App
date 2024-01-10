@@ -6,18 +6,19 @@ import BlogCard from "./BlogCard";
 
 export default function BlogList() {
     const [blogs, setBlogs] = useState<BlogModel[]>([]);
-    useEffect(() => {
-        const fetchBlogs = async () => {
-            try {
-                const fethchedBlogs = await BlogService.getAllBlogs();
-                if (fethchedBlogs) {
-                    setBlogs(fethchedBlogs);
-                }
-            }
-            catch (err: any) {
-                console.log("Error happened when fetching blogs", err.message);
+
+    const fetchBlogs = async () => {
+        try {
+            const fethchedBlogs = await BlogService.getAllBlogs();
+            if (fethchedBlogs) {
+                setBlogs(fethchedBlogs);
             }
         }
+        catch (err: any) {
+            console.log("Error happened when fetching blogs", err.message);
+        }
+    }
+    useEffect(() => {
         fetchBlogs();
     }, []);
     return(

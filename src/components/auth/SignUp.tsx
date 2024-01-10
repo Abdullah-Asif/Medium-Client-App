@@ -13,10 +13,19 @@ import { Formik, Form, Field} from "formik";
 import * as Yup from 'yup';
 import {SignUpModel} from "../../models/SignUpModel";
 import AuthService from "../../services/auth/authService";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import {useNavigate } from 'react-router-dom'
 
 const validationSchema = Yup.object().shape({
-    username: Yup.string().required('Username is required').min(3, 'Username must be at least 3 characters'),
-    name: Yup.string().required('Full name is required').min(3, 'Full name must be at least 3 characters'),
+    username: Yup.string()
+        .required('Username is required')
+        .min(3, 'Username must be at least 3 characters')
+        .matches(/^(?=.*[a-zA-Z])[a-zA-Z0-9]*$/, 'Username must contain at least one letter'),
+    name: Yup.string()
+        .required('Full name is required')
+        .min(3, 'Full name must be at least 3 characters')
+        .matches(/^[^\d]*$/, 'Name cannot contain numbers'),
     email: Yup.string().email('Invalid email').required('Email is required'),
     password: Yup.string()
         .required('Password is required')
@@ -29,9 +38,24 @@ const validationSchema = Yup.object().shape({
 const defaultTheme = createTheme();
 
 export default function SignUp() {
-    const handleSubmit = (values: SignUpModel) => {
-        AuthService.register(values);
-        console.log(values);
+    const navigate = useNavigate();
+    const handleSubmit = async (values: SignUpModel) => {
+        try {
+            await AuthService.register(values);
+            toast.success("Registration successful !", {
+                position: toast.POSITION.BOTTOM_RIGHT,
+            });
+            setTimeout(() => {
+                navigate("/auth/sign-in");
+            }, 3000);
+        } catch (error) {
+            if (error.response && error.response.status === 409) {
+                toast.error(`${error.response.data.message}`, {
+                    position: toast.POSITION.BOTTOM_RIGHT,
+
+                });
+            }
+        }
     };
 
     return (
@@ -75,7 +99,7 @@ export default function SignUp() {
                                                 id="username"
                                                 label="Username"
                                                 error={touched.username && Boolean(errors.username)}
-                                                helperText={touched.username && errors.username}
+                                                helperText={(touched.username && errors.username)}
                                             />
                                         </Grid>
                                         <Grid item xs={12}>
@@ -87,7 +111,7 @@ export default function SignUp() {
                                                 id="name"
                                                 label="Full Name"
                                                 error={touched.name && Boolean(errors.name)}
-                                                helperText={touched.name && errors.name}
+                                                helperText={(touched.name && errors.name)}
                                             />
                                         </Grid>
                                         <Grid item xs={12}>
@@ -99,7 +123,7 @@ export default function SignUp() {
                                                 id="email"
                                                 label="Email Address"
                                                 error={touched.email && Boolean(errors.email)}
-                                                helperText={touched.email && errors.email}
+                                                helperText={(touched.email && errors.email)}
                                             />
                                         </Grid>
                                         <Grid item xs={12}>
@@ -112,7 +136,7 @@ export default function SignUp() {
                                                 label="Password"
                                                 type="password"
                                                 error={touched.password && Boolean(errors.password)}
-                                                helperText={touched.password && errors.password}
+                                                helperText={(touched.password && errors.password)}
                                             />
                                         </Grid>
                                     </Grid>
@@ -135,6 +159,7 @@ export default function SignUp() {
                             </Form>
                         )}
                     </Formik>
+                    <ToastContainer/>
                 </Box>
             </Container>
         </ThemeProvider>

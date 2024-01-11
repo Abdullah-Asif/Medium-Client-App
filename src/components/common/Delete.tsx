@@ -3,6 +3,8 @@ import { Dialog, Transition } from '@headlessui/react'
 import { ExclamationTriangleIcon } from '@heroicons/react/24/outline'
 import BlogService from "../../services/blogs/blogService";
 import {useNavigate} from "react-router-dom";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function Delete({blog, setOpen}: any) {
     const cancelButtonRef = useRef(null)
@@ -11,12 +13,16 @@ export default function Delete({blog, setOpen}: any) {
         try {
             await BlogService.deleteBlogById(blog.id);
             setOpen(false);
+            toast.success("Blog deleted successfully !", {
+                position: toast.POSITION.BOTTOM_RIGHT,
+            });
             navigate('/blogs');
         } catch (error) {
             console.error("Error deleting blog:", error);
         }
     };
     return (
+        <>
         <Transition.Root show={true} as={Fragment}>
             <Dialog as="div" className="relative z-10" initialFocus={cancelButtonRef} onClose={setOpen}>
                 <Transition.Child
@@ -85,5 +91,7 @@ export default function Delete({blog, setOpen}: any) {
                 </div>
             </Dialog>
         </Transition.Root>
+            <ToastContainer/>
+        </>
     )
 }

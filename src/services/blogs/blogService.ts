@@ -5,9 +5,9 @@ import AuthHeader from "../auth/authHeader";
 class BlogService {
     baseUrl: string = import.meta.env.VITE_APP_BASE_API_URL + 'blogs';
 
-    async getAllBlogs() {
+    async getAllBlogs(pageNumber: number) {
         try {
-            const response: AxiosResponse<BlogModel[]> = await axios.get(this.baseUrl);
+            const response: AxiosResponse<BlogModel[]> = await axios.get(`${this.baseUrl}?offset=${pageNumber}`);
             return response.data;
         } catch (err: any) {
             console.log('Error fetching blogs', err.message)
@@ -17,6 +17,15 @@ class BlogService {
     async getBlogById(id: string) {
         try {
             const response: AxiosResponse<BlogModel> = await axios.get(`${this.baseUrl}/${id}`);
+            return response.data;
+        } catch (err: any) {
+            console.log('Error fetching blogs', err.message)
+        }
+    }
+
+    async getTotalBlogCount() {
+        try {
+            const response: AxiosResponse<number> = await axios.get(`${this.baseUrl}/count`);
             return response.data;
         } catch (err: any) {
             console.log('Error fetching blogs', err.message)

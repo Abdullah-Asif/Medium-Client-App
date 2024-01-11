@@ -60,7 +60,7 @@ export default function BlogList() {
 
     return (
         <>
-            <div style={{ display: "flex", flexWrap: "wrap", gap: "20px" }}>
+            <div style={{ display: "flex", flexWrap: "wrap", gap: "10px" }}>
                 {blogs.map((blog) => (
                     <BlogCard
                         key={blog.id}
@@ -72,7 +72,7 @@ export default function BlogList() {
                 ))}
             </div>
 
-            <div className="flex items-center gap-4 mt-10 ml-96">
+            <div className="flex items-center gap-4 mt-7 ml-96">
                 <button
                     className={`flex items-center gap-2 text-gray-900 ${
                         pageNumber === 1 ? "pointer-events-none opacity-50" : "cursor-pointer"

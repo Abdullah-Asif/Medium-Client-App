@@ -41,29 +41,35 @@ export default function BlogDetails() {
 
     return (
         <>
-        <div className="max-w-3xl mx-auto mt-8 p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
-            <div className="mb-4">
-                <h1 className="text-3xl text-gray-100 font-semibold mb-2">{blog.title}</h1>
-                <p className="text-gray-50">Written by {blog.username}</p>
+        <div className="flex flex-col gap-y-4 max-w-3xl mx-auto mt-8 p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+            <div className={"flex justify-between mb-4"}>
+                <div>
+                    <h1 className="text-3xl text-gray-100 font-semibold">{blog.title}</h1>
+                    <p className="text-gray-50">Written by {blog.username}</p>
+                </div>
+                <div>
+                <button
+                    type="button"
+                    onClick={() => handleDownload(blog.id)}
+                    className="px-3 py-3 bg-blue-600 rounded-md text-white outline-none focus:ring-4 shadow-lg transform active:scale-x-75 transition-transform flex items-center"
+                >
+                    <div className={"flex gap-x-2"}>
+                    <svg className="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth="2"
+                            d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
+                        />
+                    </svg>
+                    <span className="text-xs">Download</span>
+                    </div>
+                </button>
+                </div>
             </div>
-            <button
-                type="button"
-                onClick={() => handleDownload(blog.id)}
-                className="px-3 py-2 bg-blue-600 rounded-md text-white outline-none focus:ring-4 shadow-lg transform active:scale-x-75 transition-transform flex items-center"
-            >
-                <svg className="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="2"
-                        d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
-                    />
-                </svg>
-                <span className="text-xs">Download</span>
-            </button>
-            <div className="mb-4">
+
                 <p className="text-gray-100">{blog.content}</p>
-            </div>
+
             <div className="flex justify-between">
                 {canEditOrDelete() && (
                     <>

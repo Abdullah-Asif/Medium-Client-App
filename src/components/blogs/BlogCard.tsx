@@ -5,7 +5,7 @@ export default function BlogCard(blog: BlogModel) {
     const trimmedContent = blog.content.substring(0, 150);
 
     return (
-        <div className="mt-12" style={{ marginLeft: "120px" }}>
+        <div className="mt-12">
             {/* Adjust marginLeft to the amount of space you desire */}
             <div className="max-w-sm w-[300px] h-[250px] relative bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 overflow-hidden">
                 <Link to={`/blogs/${blog.id}`} state={blog} className="block h-full">

@@ -115,7 +115,7 @@ export default function SignIn() {
                                     </Button>
                                     <Grid container justifyContent="flex-end">
                                         <Grid item>
-                                            <Link to="/auth/sign-up" className="text-blue-500 hover:underline">
+                                            <Link to="/sign-up" className="text-blue-500 hover:underline">
                                                 Don't have an account? Sign Up
                                             </Link>
                                         </Grid>

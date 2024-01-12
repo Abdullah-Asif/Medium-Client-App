@@ -46,7 +46,7 @@ export default function SignUp() {
                 position: toast.POSITION.BOTTOM_RIGHT,
             });
             setTimeout(() => {
-                navigate("/auth/sign-in");
+                navigate("/sign-in");
             }, 3000);
         } catch (error) {
             if (error.response && error.response.status === 409) {
@@ -150,7 +150,7 @@ export default function SignUp() {
                                     </Button>
                                     <Grid container justifyContent="flex-end">
                                         <Grid item>
-                                            <Link to="/auth/sign-in" className="text-blue-500 hover:underline">
+                                            <Link to="/sign-in" className="text-blue-500 hover:underline">
                                                 Already have an account? Sign in
                                             </Link>
                                         </Grid>

@@ -42,7 +42,16 @@ export default function BlogList() {
     useEffect(() => {
         fetchTotalPages();
         fetchBlogs(pageNumber);
-    }, [pageNumber,location?.state]);
+    }, [pageNumber]);
+
+    useEffect(() => {
+        const lastCreatedBlog = location?.state?.blog;
+        if (lastCreatedBlog) {
+            let blogList = [lastCreatedBlog,...blogs];
+            blogList = blogList.slice(0, -1);
+            setBlogs(blogList);
+        }
+    }, [location?.state]);
 
     const changePage = async (page) => {
         setPageNumber(page);

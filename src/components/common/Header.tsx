@@ -1,6 +1,7 @@
 import { Fragment, useState} from 'react';
 import { Link } from 'react-router-dom';
 import {useNavigate } from 'react-router-dom'
+import { useLocation } from 'react-router-dom'
 import { Disclosure, Menu, Transition } from '@headlessui/react'
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
 import {useAuth} from "../../contexts/authContext";
@@ -20,7 +21,7 @@ export default function Header() {
     const [blogTitle, setBlogTitle] = useState('');
     const [blogContent, setBlogContent] = useState('');
     const navigate = useNavigate();
-
+    const location = useLocation();
     const handleLogout = () => {
         logout();
         toast.success("You've successfully logged out !", {
@@ -43,14 +44,20 @@ export default function Header() {
     }
     const handleSaveChanges = async () => {
         try {
-            await BlogService.createBlog({title: blogTitle,content: blogContent})
+            const blog = await BlogService.createBlog({title: blogTitle,content: blogContent})
             setShowCreateModal(false);
             setBlogTitle('');
             setBlogContent('');
             toast.success("Blog created successfully !", {
                 position: toast.POSITION.BOTTOM_RIGHT,
             });
-            navigate('/blogs', { state: { refresh: "doRefresh" } })
+            const currentPath= location.pathname;
+            if (currentPath === '/blogs') {
+                navigate('/blogs', {state: {blog}})
+            }
+            else {
+                navigate('/blogs')
+            }
         }
         catch (error) {
             setBlogTitle('');

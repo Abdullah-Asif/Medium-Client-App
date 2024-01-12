@@ -45,10 +45,9 @@ export default function SignUp() {
             toast.success("Registration successful !", {
                 position: toast.POSITION.BOTTOM_RIGHT,
             });
-            setTimeout(() => {
-                navigate("/sign-in");
-            }, 3000);
-        } catch (error) {
+            navigate("/sign-in");
+        }
+        catch (error) {
             if (error.response && error.response.status === 409) {
                 toast.error(`${error.response.data.message}`, {
                     position: toast.POSITION.BOTTOM_RIGHT,

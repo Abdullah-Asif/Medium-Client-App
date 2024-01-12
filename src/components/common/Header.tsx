@@ -26,7 +26,7 @@ export default function Header() {
         toast.success("You've successfully logged out !", {
             position: toast.POSITION.BOTTOM_RIGHT,
         });
-        navigate('/auth/sign-in');
+        navigate('/sign-in', );
     };
 
     const handleOpenCreatModal = () => {
@@ -35,7 +35,7 @@ export default function Header() {
             toast.info("You need to login first !", {
                 position: toast.POSITION.BOTTOM_RIGHT,
             });
-            navigate("/auth/sign-in");
+            navigate("/sign-in");
         }
         else {
             setShowCreateModal(true);
@@ -50,7 +50,7 @@ export default function Header() {
             toast.success("Blog created successfully !", {
                 position: toast.POSITION.BOTTOM_RIGHT,
             });
-            navigate('/blogs')
+            navigate('/blogs', { state: { refresh: "doRefresh" } })
         }
         catch (error) {
             setBlogTitle('');
@@ -61,7 +61,7 @@ export default function Header() {
                     position: toast.POSITION.BOTTOM_RIGHT,
                 });
             }
-            navigate("/auth/sign-in");
+            navigate("/sign-in");
         }
 
     };
@@ -224,7 +224,7 @@ export default function Header() {
                                                 {!isLoggedIn &&
                                                     <Menu.Item>
                                                         {({ active }) => (
-                                                            <Link to= "auth/sign-in"
+                                                            <Link to= "/sign-in"
 
                                                                   className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}
                                                             >
@@ -235,7 +235,7 @@ export default function Header() {
                                                 {!isLoggedIn &&
                                                     <Menu.Item>
                                                         {({ active }) => (
-                                                            <Link to= "auth/sign-up"
+                                                            <Link to= "/sign-up"
                                                                   className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}
                                                             >
                                                                 Sign up

@@ -2,11 +2,12 @@ import {useEffect, useState} from "react";
 import {BlogModel} from "../../models/BlogModel";
 import BlogService from "../../services/blogs/blogService";
 import BlogCard from "./BlogCard";
-
+import { useLocation } from 'react-router-dom';
 export default function BlogList() {
     const [blogs, setBlogs] = useState<BlogModel[]>([]);
     const [pageNumber, setPageNumber] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
+    let location: any = useLocation();
     const pageSize = 6;
     const getItemProps = (index) =>
         ({
@@ -41,7 +42,7 @@ export default function BlogList() {
     useEffect(() => {
         fetchTotalPages();
         fetchBlogs(pageNumber);
-    }, [pageNumber]);
+    }, [pageNumber,location?.state]);
 
     const changePage = async (page) => {
         setPageNumber(page);
@@ -59,8 +60,9 @@ export default function BlogList() {
     const pageButtons = Array.from({ length: totalPages }, (_, index) => index + 1);
 
     return (
-        <>
-            <div style={{ display: "flex", flexWrap: "wrap", gap: "10px" }}>
+        <div className={"p-8 py-12 flex flex-col items-center"}>
+            {/*<div style={{ display: "flex", flexWrap: "wrap", gap: "10px" }}>*/}
+            <div className={"h-[600px] grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-y-5 gap-x-24"}>
                 {blogs.map((blog) => (
                     <BlogCard
                         key={blog.id}
@@ -72,7 +74,7 @@ export default function BlogList() {
                 ))}
             </div>
 
-            <div className="flex items-center gap-4 mt-7 ml-96">
+            <div className="flex gap-4 mt-20">
                 <button
                     className={`flex items-center gap-2 text-gray-900 ${
                         pageNumber === 1 ? "pointer-events-none opacity-50" : "cursor-pointer"
@@ -83,7 +85,7 @@ export default function BlogList() {
                     Prev
                 </button>
 
-                <div className="flex items-center gap-2">
+                <div className="flex gap-2">
                     {pageButtons.map((page) => (
                         <button
                             key={page}
@@ -105,6 +107,6 @@ export default function BlogList() {
                     Next
                 </button>
             </div>
-        </>
+        </div>
     );
 }

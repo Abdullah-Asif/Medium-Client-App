@@ -7,6 +7,7 @@ import SignUp from "./components/auth/SignUp";
 import SignIn from "./components/auth/SignIn";
 import AuthProvider from "./contexts/authContext";
 import {Home} from "./components/common/Home";
+import PageNotFound from "./components/common/PageNotFound";
 function App() {
     return(<>
         <Router>
@@ -18,7 +19,7 @@ function App() {
                     <Route path="/sign-in" Component={SignIn}/>
                     <Route path="/blogs"        Component={BlogList}/>
                     <Route path="/blogs/:id"    Component={BlogDetails}/>
-                    <Route path="/*"    Component={Home}/>
+                    <Route path="*"    Component={PageNotFound}/>
                 </Routes>
             </AuthProvider>
         </Router>
